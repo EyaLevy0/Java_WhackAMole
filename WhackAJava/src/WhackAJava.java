@@ -25,6 +25,7 @@ public class WhackAJava {
    Random random = new Random();
    Timer setJavaTimer;
    Timer setPythonTimer;
+    int score = 0;
 
 
    //constructor of the game
@@ -65,7 +66,24 @@ public class WhackAJava {
        board[i] = tile;
        boardPanel.add(tile);
        tile.setFocusable(false);
-       tile.setIcon(null);
+       //tile.setIcon(null);
+       tile.addActionListener(new ActionListener()  {
+        public void actionPerformed(ActionEvent e) {
+            JButton tile = (JButton) e.getSource();
+            if (tile == currJavaTile) {
+                score+= 10;
+                textLabel.setText("Score: " + Integer.toString(score));
+            }
+            else if (tile == currPythonTile) {
+                textLabel.setText("Game Over!");
+                setJavaTimer.stop();
+                setPythonTimer.stop();
+                for (int i = 0; i < 9; i++) {
+                    board[i].setEnabled(false);
+                }
+        }
+       }
+   });
    }
 
    setJavaTimer = new Timer(800, new ActionListener() {
@@ -92,7 +110,7 @@ public class WhackAJava {
    });
 
 
-   setPythonTimer = new Timer(1500, new ActionListener() {
+   setPythonTimer = new Timer(1200, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
          //remove python from current tile
          if(currPythonTile != null) {
