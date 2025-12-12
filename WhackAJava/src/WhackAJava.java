@@ -68,7 +68,7 @@ public class WhackAJava {
        tile.setIcon(null);
    }
 
-   setJavaTimer = new Timer(1000, new ActionListener() {
+   setJavaTimer = new Timer(800, new ActionListener() {
     public void actionPerformed(ActionEvent e) {
          //remove java from current tile
          if(currJavaTile != null) {
@@ -79,6 +79,9 @@ public class WhackAJava {
          //select random button to show java
          int num = random.nextInt(9);
          JButton tile = board[num];
+
+         //if tile is occupied by python, skip tile for this turn 
+         if(currPythonTile == tile) return;
 
          //set tile to java
          currJavaTile = tile;
@@ -101,6 +104,9 @@ public class WhackAJava {
          int num = random.nextInt(9);
          JButton tile = board[num];
 
+         //if tile is occupied by java, skip tile for this turn 
+         if(currJavaTile == tile) return;
+
          //set tile to python
          currPythonTile = tile;
          currPythonTile.setIcon(pythonIcon);
@@ -109,6 +115,7 @@ public class WhackAJava {
    
    });
 
+   //start the timers for thr random appearance of java and python
     setJavaTimer.start();
     setPythonTimer.start();
    //make frame visible at the end to insure proper loading
