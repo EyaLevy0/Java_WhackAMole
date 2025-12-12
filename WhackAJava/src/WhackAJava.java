@@ -4,7 +4,7 @@ import java.util.Random;
 import javax.swing.*;
 
 //Game class
-public class WhackAJava {
+public class WhackAJava extends JFrame {
    int boardwidth = 600;
    int boardheight = 650; //50px for score
    
@@ -67,71 +67,60 @@ public class WhackAJava {
        boardPanel.add(tile);
        tile.setFocusable(false);
        //tile.setIcon(null);
-       tile.addActionListener(new ActionListener()  {
-        public void actionPerformed(ActionEvent e) {
-            JButton tile = (JButton) e.getSource();
-            if (tile == currJavaTile) {
-                score+= 10;
-                textLabel.setText("Score: " + Integer.toString(score));
-            }
-            else if (tile == currPythonTile) {
-                textLabel.setText("Game Over!");
-                setJavaTimer.stop();
-                setPythonTimer.stop();
-                for (int i = 0; i < 9; i++) {
-                    board[i].setEnabled(false);
-                }
-        }
+       tile.addActionListener((ActionEvent e) -> {
+           JButton tile1 = (JButton) e.getSource();
+           if (tile1 == currJavaTile) {
+               score+= 10;
+               textLabel.setText("Score: " + Integer.toString(score));
+           } else if (tile1 == currPythonTile) {
+               textLabel.setText("Game Over!");
+               setJavaTimer.stop();
+               setPythonTimer.stop();
+               for (int i1 = 0; i1 < 9; i1++) {
+                   board[i1].setEnabled(false);
+               }
+           }
+       });
+   }
+
+   setJavaTimer = new Timer(800, (ActionEvent e) -> {
+       //remove java from current tile
+       if(currJavaTile != null) {
+           currJavaTile.setIcon(null);
+           currJavaTile = null;
        }
-   });
-   }
-
-   setJavaTimer = new Timer(800, new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-         //remove java from current tile
-         if(currJavaTile != null) {
-              currJavaTile.setIcon(null);
-              currJavaTile = null;
-         }
-    
-         //select random button to show java
-         int num = random.nextInt(9);
-         JButton tile = board[num];
-
-         //if tile is occupied by python, skip tile for this turn 
-         if(currPythonTile == tile) return;
-
-         //set tile to java
-         currJavaTile = tile;
-         currJavaTile.setIcon(javaIcon);
-
-   }
-   
-   });
+       
+       //select random button to show java
+       int num = random.nextInt(9);
+       JButton tile = board[num];
+       
+       //if tile is occupied by python, skip tile for this turn
+       if(currPythonTile == tile) return;
+       
+       //set tile to java
+       currJavaTile = tile;
+       currJavaTile.setIcon(javaIcon);
+    });
 
 
-   setPythonTimer = new Timer(1200, new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-         //remove python from current tile
-         if(currPythonTile != null) {
-              currPythonTile.setIcon(null);
-              currPythonTile = null;
-         }
-    
-         //select random button to show python
-         int num = random.nextInt(9);
-         JButton tile = board[num];
-
-         //if tile is occupied by java, skip tile for this turn 
-         if(currJavaTile == tile) return;
-
-         //set tile to python
-         currPythonTile = tile;
-         currPythonTile.setIcon(pythonIcon);
-
-   }
-   
-   });
+   setPythonTimer = new Timer(1200, (ActionEvent e) -> {
+       //remove python from current tile
+       if(currPythonTile != null) {
+           currPythonTile.setIcon(null);
+           currPythonTile = null;
+       }
+       
+       //select random button to show python
+       int num = random.nextInt(9);
+       JButton tile = board[num];
+       
+       //if tile is occupied by java, skip tile for this turn
+       if(currJavaTile == tile) return;
+       
+       //set tile to python
+       currPythonTile = tile;
+       currPythonTile.setIcon(pythonIcon);
+    });
 
    //start the timers for thr random appearance of java and python
     setJavaTimer.start();
